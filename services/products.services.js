@@ -16,7 +16,7 @@ const getAll = async (id = null) => {
   if (id) {
     const response = await model.getById(id);
     isResponseEmpty(response);
-    return response;
+    return response[0];
   }
   const response = await model.getAll();
   return response;
