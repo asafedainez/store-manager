@@ -4,7 +4,7 @@ const httpStatus = require('../utils/http/status');
 const isResponseEmpty = (response) => {
   const erro = { 
     status: httpStatus.NOT_FOUND,
-    message: 'Product not found',
+    message: 'Sale not found',
   };
 
   if (!response.length) {
