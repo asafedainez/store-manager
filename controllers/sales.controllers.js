@@ -13,7 +13,15 @@ const create = async (req, res) => {
   return res.status(httpStatus.CREATED).json(response);
 };
 
+const update = async (req, res) => {
+  const { id } = req.params;
+  const products = req.body;
+  const response = await service.update(id, products);
+  return res.status(httpStatus.OK).json(response);
+};
+
 module.exports = {
   getAll,
   create,
+  update,
 };
