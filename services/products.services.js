@@ -52,8 +52,17 @@ const update = async (id, name, quantity) => {
   return { id, name, quantity };
 };
 
+const remove = async (id) => {
+  const productById = await model.getById(id);
+  isResponseEmpty(productById);
+
+  const response = await model.remove(id);
+  return response;
+};
+
 module.exports = {
   getAll,
   create,
   update,
+  remove,
 };
