@@ -60,6 +60,12 @@ const removeSale = async (id) => {
   return result.affectedRows;
 };
 
+const removeSaleProduct = async (id) => {
+  const query = 'delete from sales_products where sale_id = ?';
+  const [result] = await connection.execute(query, [id]);
+  return result.affectedRows;
+};
+
 module.exports = {
   getAll,
   getById,
@@ -67,4 +73,5 @@ module.exports = {
   createSaleProduct,
   updateSaleProduct,
   removeSale,
+  removeSaleProduct,
 };
