@@ -24,8 +24,16 @@ const update = async (req, res) => {
   const response = await service.update(id, name, quantity);
   return res.status(httpStatus.OK).json(response);
 };
+
+const remove = async (req, res) => {
+  const { id } = req.params;
+  await service.remove(id);
+  return res.status(httpStatus.NO_CONTENT).send();
+};
+
 module.exports = {
   getAll,
   create,
   update,
+  remove,
 };
