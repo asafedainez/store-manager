@@ -45,8 +45,19 @@ const update = async (id, products) => {
   return { saleId: id, itemUpdated: products };
 };
 
+const remove = async (id) => {
+  const sale = await model.getById(id);
+  isResponseEmpty(sale);
+
+  await Promise.all([
+    model.removeSaleProduct(id),
+    model.removeSale(id),
+  ]);
+};
+
 module.exports = {
   getAll,
   create,
   update,
+  remove,
 };
