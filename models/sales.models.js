@@ -41,8 +41,16 @@ const createSale = async () => {
   const [result] = await connection.execute(query);
   return result.insertId;
 };
+
+const createSaleProduct = async (saleId, productId, quantity) => {
+  const query = 'insert into sales_products (sale_id, product_id, quantity) values (?, ?, ?)';
+  const [result] = await connection.execute(query, [saleId, productId, quantity]);
+  return result.insertId;
+};
+
 module.exports = {
   getAll,
   getById,
   createSale,
+  createSaleProduct,
 };
