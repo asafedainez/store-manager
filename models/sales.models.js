@@ -54,10 +54,17 @@ const updateSaleProduct = async (saleId, productId, quantity) => {
   return result.affectedRows;
 };
 
+const removeSale = async (id) => {
+  const query = 'delete from sales where id = ?';
+  const [result] = await connection.execute(query, [id]);
+  return result.affectedRows;
+};
+
 module.exports = {
   getAll,
   getById,
   createSale,
   createSaleProduct,
   updateSaleProduct,
+  removeSale,
 };
