@@ -33,7 +33,20 @@ const create = async (products) => {
   return { id: saleId, itemsSold: products };
 };
 
+const update = async (id, products) => {
+  const sale = await model.getById(id);
+  isResponseEmpty(sale);
+
+  const productsForUpdate = products
+    .map((product) => model.updateSaleProduct(id, product.productId, product.quantity));
+
+  await Promise.all(productsForUpdate);
+
+  return { saleId: id, itemUpdated: products };
+};
+
 module.exports = {
   getAll,
   create,
+  update,
 };
