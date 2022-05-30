@@ -44,7 +44,16 @@ const create = async (name, quantity) => {
   return response;
 };
 
+const update = async (id, name, quantity) => {
+  const productById = await model.getById(id);
+  isResponseEmpty(productById);
+
+  await model.update(id, name, quantity);
+  return { id, name, quantity };
+};
+
 module.exports = {
   getAll,
   create,
+  update,
 };
