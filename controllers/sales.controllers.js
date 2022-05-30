@@ -7,6 +7,13 @@ const getAll = async (req, res) => {
   return res.status(httpStatus.OK).json(response);
 };
 
+const create = async (req, res) => {
+  const products = req.body;
+  const response = await service.create(products);
+  return res.status(httpStatus.CREATED).json(response);
+};
+
 module.exports = {
   getAll,
+  create,
 };
