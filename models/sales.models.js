@@ -36,7 +36,13 @@ const getById = async (id) => {
   return result.map(resultGetByIdShape);
 };
 
+const createSale = async () => {
+  const query = 'insert into sales (date) values (now())';
+  const [result] = await connection.execute(query);
+  return result.insertId;
+};
 module.exports = {
   getAll,
   getById,
+  createSale,
 };
