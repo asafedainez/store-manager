@@ -10,4 +10,6 @@ routes.post('/', middleware, controller.create);
 
 routes.put('/:id', middleware, controller.update);
 
+routes.delete('/:id', controller.remove);
+
 module.exports = routes;
