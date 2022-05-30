@@ -13,8 +13,16 @@ const isResponseEmpty = (response) => {
 };
 
 const hasNameInBD = (name, bd) => {
+  const erro = { 
+    status: httpStatus.CONFLICT,
+    message: 'Product already exists',
+  };
+
   const isUnique = bd.some((row) => row.name === name);
-  return isUnique;
+  
+  if (isUnique) {
+    throw erro;
+  }
 };
 
 const getAll = async (id = null) => {
@@ -28,19 +36,11 @@ const getAll = async (id = null) => {
 };
 
 const create = async (name, quantity) => {
-  const erro = { 
-    status: httpStatus.CONFLICT,
-    message: 'Product already exists',
-  };
-
   const products = await getAll();
 
-  if (hasNameInBD(name, products)) {
-    throw erro;
-  }
+  hasNameInBD(name, products);
 
   const response = await model.create(name, quantity);
-  console.log(response);
   return response;
 };
 
