@@ -20,8 +20,15 @@ const update = async (req, res) => {
   return res.status(httpStatus.OK).json(response);
 };
 
+const remove = async (req, res) => {
+  const { id } = req.params;
+  const response = await service.remove(id);
+  return res.status(httpStatus.NO_CONTENT).json(response);
+};
+
 module.exports = {
   getAll,
   create,
   update,
+  remove,
 };
