@@ -6,7 +6,7 @@ routes.get('/:id', controller.getAll);
 
 routes.get('/', controller.getAll);
 
-routes.post('/', middleware, (_req, _res) => {});
+routes.post('/', middleware, controller.create);
 
 routes.put('/:id', middleware, (_req, _res) => {});
 
