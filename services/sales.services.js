@@ -22,6 +22,11 @@ const getAll = async (id = null) => {
   return response;
 };
 
+const updateProductQuantity = async (productId, quantity) => {
+  const result = await model.increaseProductQuantity(productId, quantity);
+  return result;
+};
+
 const create = async (products) => {
   const saleId = await model.createSale();
 
@@ -29,6 +34,11 @@ const create = async (products) => {
     .map((product) => model.createSaleProduct(saleId, product.productId, product.quantity));
   
   await Promise.all(productsForInsert);
+
+  const updateProducts = products
+    .map((product) => updateProductQuantity(product.productId, -product.quantity));
+
+  await Promise.all(updateProducts);
 
   return { id: saleId, itemsSold: products };
 };
@@ -49,10 +59,15 @@ const remove = async (id) => {
   const sale = await model.getById(id);
   isResponseEmpty(sale);
 
+  const updateProducts = sale
+    .map((product) => updateProductQuantity(product.productId, product.quantity));
+
   await Promise.all([
     model.removeSaleProduct(id),
     model.removeSale(id),
   ]);
+
+  await Promise.all(updateProducts);
 };
 
 module.exports = {
