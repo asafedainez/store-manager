@@ -33,7 +33,7 @@ describe('Quando é chamada o método GET deve retornar todos os produtos cadast
     productsService.getAll.restore();
   });
 
-  it('Deve retornar o status 200', async () => {
+  it('Deve retornar o status 200 - OK', async () => {
     await productsController.getAll(req, res);
     expect(res.status.calledWith(http_status.OK)).to.be.equal(true);
   });
@@ -45,32 +45,85 @@ describe('Quando é chamada o método GET deve retornar todos os produtos cadast
 });
 
 describe('Quando é chamada o método POST ', () => {
-  describe('e o body da requisição está correto', () => {
-    const body = { name: 'produto', quantity: 100 };
-    const responseService = { id: 1, name: 'produto', quantity: 100 };
+  const body = { name: 'produto', quantity: 100 };
+  const responseService = { id: 1, name: 'produto', quantity: 100 };
 
-    const res = {};
-    const req = { body };
+  const res = {};
+  const req = { body };
 
-    before(async () => {
-      res.status = sinon.stub().returns(res);
-      res.json = sinon.stub().returns();
+  before(async () => {
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
 
-      sinon.stub(productsService, 'create').resolves(responseService);
-    });
+    sinon.stub(productsService, 'create').resolves(responseService);
+  });
 
-    after(() => {
-      productsService.create.restore();
-    });
+  after(() => {
+    productsService.create.restore();
+  });
 
-    it('Deve retornar o status 201', async () => {
-      await productsController.create(req, res);
-      expect(res.status.calledWith(http_status.CREATED)).to.be.equal(true);
-    });
+  it('Deve retornar o status 201 - CREATED', async () => {
+    await productsController.create(req, res);
+    expect(res.status.calledWith(http_status.CREATED)).to.be.equal(true);
+  });
 
-    it('Deve retornar um array', async () => {
-      await productsController.create(req, res);
-      expect(res.json.calledWith(sinon.match.object)).to.be.equal(true);
-    });
+  it('Deve retornar um array', async () => {
+    await productsController.create(req, res);
+    expect(res.json.calledWith(sinon.match.object)).to.be.equal(true);
+  });
+});
+
+describe('Quando é chamado o método PUT', () => {
+  const body = { name: 'produto', quantity: 10 };
+  const responseService = { id: 1, name: 'produto', quantity: 10 };
+
+  const res = {};
+  const req = { body, params: { id: 1 } };
+
+  before(async () => {
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    sinon.stub(productsService, 'update').resolves(responseService);
+  });
+
+  after(() => {
+    productsService.update.restore();
+  });
+
+  it('Deve retornar o status 200 - OK', async () => {
+    await productsController.update(req, res);
+    expect(res.status.calledWith(http_status.OK)).to.be.equal(true);
+  });
+
+  it('Deve retornar um array', async () => {
+    await productsController.update(req, res);
+    expect(res.json.calledWith(sinon.match.object)).to.be.equal(true);
+  });
+});
+
+describe('Quando é chamado o método DELETE', () => {
+  const res = {};
+  const req = { params: { id: 1 } };
+
+  before(async () => {
+    res.status = sinon.stub().returns(res);
+    res.send = sinon.stub().returns();
+
+    sinon.stub(productsService, 'remove').resolves([]);
+  });
+
+  after(() => {
+    productsService.remove.restore();
+  });
+
+  it('Deve retornar o status 204 - NO CONTENT', async () => {
+    await productsController.remove(req, res);
+    expect(res.status.calledWith(http_status.NO_CONTENT)).to.be.equal(true);
+  });
+
+  it('Deve retornar nada em seu body', async () => {
+    await productsController.remove(req, res);
+    expect(res.json).to.be.undefined;
   });
 });
