@@ -97,3 +97,45 @@ describe('Quando é chamada o método POST ', () => {
   });
 });
 
+describe('Quando é chamado o método PUT', () => {
+  const body = [
+    {
+      productId: 1,
+      quantity: 6,
+    },
+  ];
+  const responseService = {
+    saleId: 1,
+    itemUpdated: [
+      {
+        productId: 1,
+        quantity: 6,
+      },
+    ],
+  };
+
+  const res = {};
+  const req = { body, params: { id: 1 } };
+
+  before(async () => {
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    sinon.stub(salesService, 'update').resolves(responseService);
+  });
+
+  after(() => {
+    salesService.update.restore();
+  });
+
+  it('Deve retornar o status 200 - OK', async () => {
+    await salesController.update(req, res);
+    expect(res.status.calledWith(http_status.OK)).to.be.equal(true);
+  });
+
+  it('Deve retornar um array', async () => {
+    await salesController.update(req, res);
+    expect(res.json.calledWith(sinon.match.object)).to.be.equal(true);
+  });
+});
+
