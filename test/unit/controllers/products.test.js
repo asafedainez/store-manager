@@ -44,4 +44,33 @@ describe('Quando é chamada o método GET deve retornar todos os produtos cadast
   });
 });
 
+describe('Quando é chamada o método POST ', () => {
+  describe('e o body da requisição está correto', () => {
+    const body = { name: 'produto', quantity: 100 };
+    const responseService = { id: 1, name: 'produto', quantity: 100 };
+
+    const res = {};
+    const req = { body };
+
+    before(async () => {
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      sinon.stub(productsService, 'create').resolves(responseService);
+    });
+
+    after(() => {
+      productsService.create.restore();
+    });
+
+    it('Deve retornar o status 201', async () => {
+      await productsController.create(req, res);
+      expect(res.status.calledWith(http_status.CREATED)).to.be.equal(true);
+    });
+
+    it('Deve retornar um array', async () => {
+      await productsController.create(req, res);
+      expect(res.json.calledWith(sinon.match.object)).to.be.equal(true);
+    });
+  });
 });
