@@ -12,6 +12,22 @@ const isResponseEmpty = (response) => {
   }
 };
 
+const haveQuantityForSales = async (products) => {
+  const erro = {
+    status: httpStatus.UNPROCESSABLE_ENTITY,
+    message: 'Such amount is not permitted to sell',
+  };
+
+  const productsQuantityPromise = products
+    .map((product) => model.getProductQuantity(product.productId));
+
+  const productsQuantity = await Promise.all(productsQuantityPromise);
+
+  if (productsQuantity.some((quantity, index) => quantity < products[index].quantity)) { 
+    throw erro; 
+  }
+};
+
 const getAll = async (id = null) => {
   if (id) {
     const response = await model.getById(id);
@@ -28,6 +44,8 @@ const updateProductQuantity = async (productId, quantity) => {
 };
 
 const create = async (products) => {
+  await haveQuantityForSales(products);
+  
   const saleId = await model.createSale();
 
   const productsForInsert = products
