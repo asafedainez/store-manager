@@ -46,3 +46,54 @@ describe('quando é chamada o método get deve retornar todas as vendas cadastra
   });
 });
 
+describe('Quando é chamada o método POST ', () => {
+  const body = [
+    {
+      productId: 1,
+      quantity: 2,
+    },
+    {
+      productId: 2,
+      quantity: 5,
+    },
+  ];
+
+  const responseService = {
+    id: 1,
+    itemsSold: [
+      {
+        productId: 1,
+        quantity: 2,
+      },
+      {
+        productId: 2,
+        quantity: 5,
+      },
+    ],
+  };
+
+  const res = {};
+  const req = { body };
+
+  before(async () => {
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    sinon.stub(salesService, 'create').resolves(responseService);
+  });
+
+  after(() => {
+    salesService.create.restore();
+  });
+
+  it('Deve retornar o status 201 - CREATED', async () => {
+    await salesController.create(req, res);
+    expect(res.status.calledWith(http_status.CREATED)).to.be.equal(true);
+  });
+
+  it('Deve retornar um array', async () => {
+    await salesController.create(req, res);
+    expect(res.json.calledWith(sinon.match.object)).to.be.equal(true);
+  });
+});
+
