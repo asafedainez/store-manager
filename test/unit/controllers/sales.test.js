@@ -2,21 +2,21 @@ const sinon = require('sinon');
 const { expect } = require('chai');
 const http_status = require('../../../utils/http/status');
 
-const salescontroller = require('../../../controllers/sales.controllers');
-const salesservice = require('../../../services/sales.services');
+const salesController = require('../../../controllers/sales.controllers');
+const salesService = require('../../../services/sales.services');
 
-describe('quando é chamada o método get deve retornar todas as vendas cadastrados', () => {
-  const alldata = [
+describe('Quando é chamada o método GET deve retornar todas as vendas cadastrados', () => {
+  const allData = [
     {
-      saleid: 1,
-      date: '2021-09-09t04:54:29.000z',
-      productid: 1,
+      saleId: 1,
+      date: '2021-09-09T04:54:29.000Z',
+      productId: 1,
       quantity: 2,
     },
     {
-      saleid: 1,
-      date: '2021-09-09t04:54:54.000z',
-      productid: 2,
+      saleId: 1,
+      date: '2021-09-09T04:54:54.000Z',
+      productId: 2,
       quantity: 2,
     },
   ];
@@ -28,21 +28,21 @@ describe('quando é chamada o método get deve retornar todas as vendas cadastra
     res.status = sinon.stub().returns(res);
     res.json = sinon.stub().returns();
 
-    sinon.stub(salesservice, 'getall').resolves(alldata);
+    sinon.stub(salesService, 'getAll').resolves(allData);
   });
 
   after(() => {
-    salesservice.getall.restore();
+    salesService.getAll.restore();
   });
 
-  it('deve retornar o status 200 - ok', async () => {
-    await salescontroller.getall(req, res);
-    expect(res.status.calledwith(http_status.ok)).to.be.equal(true);
+  it('Deve retornar o status 200 - OK', async () => {
+    await salesController.getAll(req, res);
+    expect(res.status.calledWith(http_status.OK)).to.be.equal(true);
   });
 
-  it('deve retornar um array', async () => {
-    await salescontroller.getall(req, res);
-    expect(res.json.calledwith(sinon.match.array)).to.be.equal(true);
+  it('Deve retornar um array', async () => {
+    await salesController.getAll(req, res);
+    expect(res.json.calledWith(sinon.match.array)).to.be.equal(true);
   });
 });
 
@@ -139,3 +139,23 @@ describe('Quando é chamado o método PUT', () => {
   });
 });
 
+describe('Quando é chamado o método DELETE', () => {
+  const res = {};
+  const req = { params: { id: 1 } };
+
+  before(async () => {
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    sinon.stub(salesService, 'remove').resolves([]);
+  });
+
+  after(() => {
+    salesService.remove.restore();
+  });
+
+  it('Deve retornar o status 204 - NO CONTENT', async () => {
+    await salesController.remove(req, res);
+    expect(res.status.calledWith(http_status.NO_CONTENT)).to.be.equal(true);
+  });
+});
