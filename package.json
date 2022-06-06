@@ -1,27 +1,19 @@
 {
-  "name": "sd-0x-store-manager",
+  "name": "store-manager",
   "version": "1.0.0",
-  "description": "Simple CRUD to sales and products",
+  "description": "Um simples projeto CRUD de gerenciamento de lojas com NodeJS, express, mySQL e muito mais.",
   "main": "index.js",
   "scripts": {
     "posttest": "node ./test/restoreDb.js",
-    "test": "jest --runInBand --testTimeout=60000",
-    "test:mocha": "nyc --all --include models --include services --include controllers mocha test/unit/**/*.js --exit",
+    "test": "nyc --all --include models --include services --include controllers mocha test/unit/**/*.js --exit",
     "start": "node index.js",
     "debug": "nodemon --ignore coverage index.js",
     "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json . --ext .js, .jsx",
     "restore": "node ./test/restoreDb.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/tryber/sd-02-project-store-manager.git"
-  },
-  "author": "",
+  "author": "Asafe Dainez",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/tryber/sd-02-project-store-manager/issues"
-  },
-  "homepage": "https://github.com/tryber/sd-02-project-store-manager#readme",
+  "homepage": "https://github.com/asafedainez/store-manager",
   "dependencies": {
     "@hapi/boom": "^9.1.0",
     "body-parser": "^1.19.0",
